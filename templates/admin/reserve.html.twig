@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administravimas{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('info') %}
+        <div class="alert alert-info">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {{ form(inputForm) }}
+
+    <hr/>
+
+    <a href="{{ path('admin') }}">Atgal į sąrašą</a>
+{% endblock %}

@@ -17,12 +17,28 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin", name="admin")
      */
-    public function index(Request $request, EntityManagerInterface $manager, SlotRepository $repository, SlotsFiller $filter)
+    public function index(SlotRepository $repository, SlotsFiller $filter)
+    {
+        $availableSlots = $filter->getToday(new \DateTime(), new \DateTime(date('Y-m-d 23:00:00')), 15);
+        $reservations = $repository->findAll();
+        $slots = $filter->merge($availableSlots, $reservations);
+
+        /** @var Slot[] $reservations */
+        /** @var Slot[] $slots */
+        return $this->render('admin/index.html.twig', [
+            "reservations" => $reservations,
+            "slots" => $slots
+        ]);
+    }
+
+    /**
+     * @Route("/admin/reserve/{time}", name="reserve")
+     */
+    public function reserve(\DateTime $time, Request $request, EntityManagerInterface $manager)
     {
         $slot = new Slot();
-        $slot->setDate(new \DateTime());
+        $slot->setDate($time);
         $form = $this->createForm(SlotType::class, $slot);
-
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             try {
@@ -40,15 +56,9 @@ class AdminController extends AbstractController
             }
         }
 
-        $slots = $filter->getToday(new \DateTime(), new \DateTime(date('Y-m-d 23:00:00')), 15);
-
         /** @var Slot[] $reservations */
-        $reservations = $repository->findAll();
-
-        return $this->render('admin/index.html.twig', [
+        return $this->render('admin/reserve.html.twig', [
             "inputForm" => $form->createView(),
-            "reservations" => $reservations,
-            "slots" => $slots
         ]);
     }
 }

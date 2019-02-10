@@ -9,19 +9,19 @@
         </div>
     {% endfor %}
 
-    {{ form(inputForm) }}
-
-    <ul class="list-group">
-        {% for reservation in reservations %}
-            <li class="list-group-item"><span class="badge">{{ reservation.date|date('Y-m-d H:i') }}</span> {{ reservation.name }}</li>
-        {% endfor %}
-    </ul>
-
-    <hr/>
-
     <ul class="list-group">
         {% for slot in slots %}
-            <li class="list-group-item"><span class="badge">{{ slot.date|date('Y-m-d H:i') }}</span> {{ slot.name }}</li>
+            <li class="list-group-item"><span class="badge">{{ slot.date|date('Y-m-d H:i') }}</span>
+                {% if slot.free %}
+                    <a class="btn btn-success" role="button" href="{{ path('reserve', {"time": slot.date|date('c')}) }}">
+                        Laisva
+                    </a>
+                {% else %}
+                    <span class="btn btn-warning">
+                        {{ slot.name }}
+                    </span>
+                {% endif %}
+            </li>
         {% endfor %}
     </ul>
 {% endblock %}

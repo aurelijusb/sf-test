@@ -66,4 +66,8 @@ class Slot
 
         return $this;
     }
+
+    public function isFree(): bool {
+        return $this->getName() == "";
+    }
 }
