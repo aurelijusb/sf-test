@@ -3,5 +3,8 @@
 {% block title %}Administravimas{% endblock %}
 
 {% block body %}
-Čia bus suvedamos rezervacijos
+{{ form(inputForm) }}
+{% if state == "submitted"  %}
+    <pre>{{ dump(formData) }}</pre>
+{% endif %}
 {% endblock %}
