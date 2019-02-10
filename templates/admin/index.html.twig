@@ -16,4 +16,12 @@
             <li class="list-group-item"><span class="badge">{{ reservation.date|date('Y-m-d H:i') }}</span> {{ reservation.name }}</li>
         {% endfor %}
     </ul>
+
+    <hr/>
+
+    <ul class="list-group">
+        {% for slot in slots %}
+            <li class="list-group-item"><span class="badge">{{ slot.date|date('Y-m-d H:i') }}</span> {{ slot.name }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}

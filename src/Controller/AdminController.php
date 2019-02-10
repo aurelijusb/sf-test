@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Slot;
 use App\Form\SlotType;
 use App\Repository\SlotRepository;
+use App\Service\SlotsFiller;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +17,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin", name="admin")
      */
-    public function index(Request $request, EntityManagerInterface $manager, SlotRepository $repository)
+    public function index(Request $request, EntityManagerInterface $manager, SlotRepository $repository, SlotsFiller $filter)
     {
         $slot = new Slot();
         $slot->setDate(new \DateTime());
@@ -39,12 +40,15 @@ class AdminController extends AbstractController
             }
         }
 
+        $slots = $filter->getToday(new \DateTime(), new \DateTime(date('Y-m-d 23:00:00')), 15);
+
         /** @var Slot[] $reservations */
         $reservations = $repository->findAll();
 
         return $this->render('admin/index.html.twig', [
             "inputForm" => $form->createView(),
             "reservations" => $reservations,
+            "slots" => $slots
         ]);
     }
 }

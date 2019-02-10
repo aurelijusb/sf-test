@@ -26,6 +26,18 @@ class Slot
      */
     private $Date;
 
+    /**
+     * Slot constructor.
+     * @param $Name
+     * @param $Date
+     */
+    public function __construct($Name = '', $Date = null)
+    {
+        $this->Name = $Name;
+        $this->Date = $Date;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
