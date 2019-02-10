@@ -3,8 +3,11 @@
 {% block title %}Administravimas{% endblock %}
 
 {% block body %}
-{{ form(inputForm) }}
-{% if state == "submitted"  %}
-    <pre>{{ dump(formData) }}</pre>
-{% endif %}
+    {% for message in app.flashes('info') %}
+        <div class="alert alert-info">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {{ form(inputForm) }}
 {% endblock %}
