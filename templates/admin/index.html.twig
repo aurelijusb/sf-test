@@ -10,4 +10,10 @@
     {% endfor %}
 
     {{ form(inputForm) }}
+
+    <ul class="list-group">
+        {% for reservation in reservations %}
+            <li class="list-group-item"><span class="badge">{{ reservation.date|date('Y-m-d H:i') }}</span> {{ reservation.name }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
